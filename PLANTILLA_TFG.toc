@@ -1,0 +1,83 @@
+\babel@toc {spanish}{}
+\babel@toc {spanish}{}
+\contentsline {chapter}{Agradecimientos}{\es@scroman {v}}
+\contentsline {chapter}{Índice de Figuras}{\es@scroman {ix}}
+\contentsline {chapter}{Índice de Tablas}{\es@scroman {xi}}
+\contentsline {chapter}{\numberline {1}Introducción}{1}
+\contentsline {section}{\numberline {1.1}Motivación del proyecto}{1}
+\contentsline {section}{\numberline {1.2}Objetivos y enfoque}{1}
+\contentsline {section}{\numberline {1.3}Desarrollo y plan de trabajo}{1}
+\contentsline {chapter}{\numberline {2}Estado del arte}{3}
+\contentsline {section}{\numberline {2.1}La realidad virtual a día de hoy}{3}
+\contentsline {section}{\numberline {2.2}Oculus Rift y otros sistemas de gafas de realidad virtual}{4}
+\contentsline {section}{\numberline {2.3}Unity 3D}{5}
+\contentsline {section}{\numberline {2.4}Discapacidades motoras habituales}{6}
+\contentsline {section}{\numberline {2.5}La realidad virtual y las discapacidades}{7}
+\contentsline {chapter}{\numberline {3}Sistema, diseño y desarrollo}{9}
+\contentsline {section}{\numberline {3.1}Oculus Rift}{9}
+\contentsline {subsection}{\numberline {3.1.1}Aspectos Físicos}{9}
+\contentsline {subsection}{\numberline {3.1.2}Hardware}{11}
+\contentsline {subsubsection}{Pantalla}{11}
+\contentsline {subsubsection}{Giroscopio y acelerometro}{11}
+\contentsline {subsubsection}{Sensor Infrarrojos}{11}
+\contentsline {subsubsection}{Dependencias de hardware}{12}
+\contentsline {subsection}{\numberline {3.1.3}Software}{13}
+\contentsline {subsubsection}{SDK y Runtime}{13}
+\contentsline {subsubsection}{Herramientas para desarrollo}{13}
+\contentsline {subsection}{\numberline {3.1.4}Configuración del DK2}{14}
+\contentsline {section}{\numberline {3.2}Unity 3D}{14}
+\contentsline {subsection}{\numberline {3.2.1}C\#, JavaScript y Mono Runtime}{14}
+\contentsline {subsection}{\numberline {3.2.2}Descripción de Unity 3D}{15}
+\contentsline {subsubsection}{Elementos Gráficos: GameObjects y escenas}{15}
+\contentsline {subsubsection}{Clase base de control: MonoBehaviour}{15}
+\contentsline {subsubsection}{Animaciones}{16}
+\contentsline {subsubsection}{Recursos y componentes: Asset Store}{17}
+\contentsline {section}{\numberline {3.3}Requisitos}{18}
+\contentsline {subsection}{\numberline {3.3.1}Requisitos funcionales}{18}
+\contentsline {subsubsection}{Fundamentales}{18}
+\contentsline {paragraph}{El sistema debe tener un diseño modular para que se pueda modificar con sencillez.}{18}
+\contentsline {paragraph}{El sistema debe dar capacidad al usuario de interaccionar con los elementos del escenario que le rodea.}{18}
+\contentsline {paragraph}{El sistema debe dar al usuario en todo momento información de fecha y hora actuales.}{18}
+\contentsline {paragraph}{El sistema debe disponer de una funcionalidad simple para apagarse.}{19}
+\contentsline {paragraph}{El sistema debe dar una funcionalidad para navegar por Internet.}{19}
+\contentsline {subsubsection}{No fundamentales}{19}
+\contentsline {paragraph}{El sistema debe ser capaz de realizar un autoajuste en función de la discapacidad del usuario.}{19}
+\contentsline {paragraph}{El sistema debe permitir configurar el aspecto visual del escenario principal que rodea al usuario.}{19}
+\contentsline {subsection}{\numberline {3.3.2}Requisitos no funcionales}{19}
+\contentsline {subsubsection}{Fundamentales}{19}
+\contentsline {paragraph}{El sistema debe ser capaz de ejecutar el mayor número de dispositivos posible con fluidez.}{19}
+\contentsline {subsubsection}{No fundamentales}{19}
+\contentsline {paragraph}{El sistema debe poder ejecutarse en móviles}{19}
+\contentsline {section}{\numberline {3.4}Diseño del sistema}{20}
+\contentsline {subsection}{\numberline {3.4.1}Estructura del código}{20}
+\contentsline {subsubsection}{Cardboard}{20}
+\contentsline {subsubsection}{Scenes}{20}
+\contentsline {subsubsection}{System}{20}
+\contentsline {section}{\numberline {3.5}Desarrollo del sistema}{21}
+\contentsline {section}{\numberline {3.6}Diagrama de clases}{21}
+\contentsline {section}{\numberline {3.7}Casos de uso}{24}
+\contentsline {section}{\numberline {3.8}Problemas encontrados y soluciones}{27}
+\contentsline {chapter}{\numberline {4}Experimentos Realizados y Resultados}{29}
+\contentsline {section}{\numberline {4.1}Estudio de efectos de las gafas de realidad virtual}{29}
+\contentsline {subsection}{\numberline {4.1.1}Metodolog\'ia}{29}
+\contentsline {subsection}{\numberline {4.1.2}Resultados}{30}
+\contentsline {subsection}{\numberline {4.1.3}Conclusiones}{30}
+\contentsline {section}{\numberline {4.2}Estudio de comodidad y usabilidad del sistema}{31}
+\contentsline {subsection}{\numberline {4.2.1}Metodolog\'ia}{31}
+\contentsline {subsection}{\numberline {4.2.2}Resultados}{31}
+\contentsline {subsection}{\numberline {4.2.3}Conclusiones}{32}
+\contentsline {chapter}{\numberline {5}Conclusiones, discusión y trabajo futuro}{33}
+\contentsline {chapter}{Glosario de acrónimos}{35}
+\contentsline {chapter}{Bibliografía}{36}
+\contentsline {chapter}{\numberline {A}Casos de Uso}{39}
+\contentsline {section}{\numberline {A.1}Caso 1}{39}
+\contentsline {section}{\numberline {A.2}Caso 2}{41}
+\contentsline {section}{\numberline {A.3}Caso 3}{44}
+\contentsline {chapter}{\numberline {B}Código Fuente}{51}
+\contentsline {section}{\numberline {B.1}Menu}{51}
+\contentsline {section}{\numberline {B.2}Panel de información}{55}
+\contentsline {section}{\numberline {B.3}Navegador}{56}
+\contentsline {section}{\numberline {B.4}Teclado Virtual}{63}
+\contentsline {section}{\numberline {B.5}Sistema de interacción Gaze}{76}
+\contentsline {section}{\numberline {B.6}Sistema de emulación de clicks y teclado}{78}
+\contentsline {section}{\numberline {B.7}Utilidades}{81}

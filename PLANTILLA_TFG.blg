@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: PLANTILLA_TFG.aux
+The style file: unsrt.bst
+Database file #1: bibliografia.bib
+Warning--empty journal in article:MPato
+Warning--empty year in article:BCISilla
+Warning--empty year in article:BCIVRCoordinacion
+Warning--empty year in article:VRAutism
+You've used 34 entries,
+            1791 wiz_defined-function locations,
+            632 strings with 8916 characters,
+and the built_in function-call counts, 6062 in all, are:
+= -- 553
+> -- 200
+< -- 9
++ -- 88
+- -- 54
+* -- 143
+:= -- 920
+add.period$ -- 131
+call.type$ -- 34
+change.case$ -- 34
+chr.to.int$ -- 0
+cite$ -- 38
+duplicate$ -- 282
+empty$ -- 672
+format.name$ -- 54
+if$ -- 1453
+int.to.chr$ -- 0
+int.to.str$ -- 34
+missing$ -- 10
+newline$ -- 202
+num.names$ -- 34
+pop$ -- 201
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 170
+stack$ -- 0
+substring$ -- 160
+swap$ -- 106
+text.length$ -- 9
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 4
+while$ -- 49
+width$ -- 36
+write$ -- 381
+(There were 4 warnings)

@@ -1,0 +1,406 @@
+\chapter{Sistema, diseño y desarrollo}
+\label{chap:sistemadesarrollado}
+En este capítulo se exponen las labores desarrolladas en este TFG. Para ello, primero hay que entender en detalle las tecnologías implicadas en su desarrollo: \emph{Oculus Rift} y \emph{Unity 3D}. Después se pasa a la parte de diseño y desarrollo del software, para ello hay una descripción de los requisitos funcionales y no funcionales subcatalogados en \emph{Fundamentales} (cuyo objetivo es este TFG) o \emph{No Fundamentales} cuyo desarrollo se pospondrá a un trabajo futuro. Se mostrará a continuación el diseño de clases a través de un diagrama de clases de la aplicación y los distintos escenarios de casos de uso del sistema.
+
+\lsection{Oculus Rift}
+
+En esta sección nos centraremos en las \emph{Oculus Rift} más en profundidad. Hay que tener en cuenta que muchos de sus principios básicos de funcionamiento los comparte con otros dispositivos como las \emph{HTC Vive} o las \emph{Google Cardboard}.
+
+\subsection{Aspectos Físicos}
+El principal principio en el que se basan las \emph{Oculus Rift}, y casi todos los sistemas de realidad virtual enfocados al sentido de la vista, es en la capacidad de nuestro cerebro para fusionar imágenes cuando se presentan por individual en cada ojo. El impedimento que esto conlleva es que usuarios con enfermedades como el estrabismo ocular tienen dificultades para realizar dicha fusión. En consecuencia, tienen problemas en la percepción de la profundidad y en el caso de uso de tecnologías 3D (no solo las enfocadas a la realidad virtual) pueden sufrir mareos e incapacidad para percibir la formación de la imagen 3D, ya que solo serán capaces de ver figuras borrosas, de manera similar a cuando nos quitamos las gafas en un cine 3D.
+
+Este principio se basa en la convergencia ocular y en el ángulo de convergencia que forman los dos ojos con el objeto que se percibe. Imaginemos un objeto situado frente a nosotros: debido a que disponemos de una visión binocular (cada ojo ve el objeto por separado) la focalización de este objeto percibido requiere del posicionamiento de cada ojo en un ángulo adecuado, de modo que ambas imágenes convergirán y se percibirán como una sola y con una profundidad adecuada respecto al espacio que le rodea. El ángulo de convergencia que forman los dos ojos con el objeto que se percibe aumenta a medida que el objeto se halla más próximo y disminuye cuando el objeto está más lejano. Esta distancia de convergencia suele estar en un valor entre 7 y 11 cm. Cuando el ángulo o distancia de convergencia no es adecuado se produce la llamada diplopia o visión doble, que explica porqué cuando acercamos mucho a la nariz un objeto, la imagen no se forma correctamente en nuestro cerebro y la vemos borrosa.
+
+En la figura \ref{fig:fusionojos} se puede ver un pequeño esquema en el que se ha representado el ángulo de convergencia de cada ojo y cómo se produce la fusión (3D) cuando se posiciona a la distancia adecuada. 
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.5\textwidth]{images/distanciafusion.png}
+  
+  \caption{Diagrama que representa como las imágenes percibidas por nuestros ojos fusionan una imagen.\\Fuente:\protect\url{https://es.wikipedia.org/wiki/Estereoscopia\#/media/File:Estereoglifo.jpg}}
+  \label{fig:fusionojos}
+\end{figure}
+
+El problema de un sistema de gafas de realidad virtual es que no es capaz de proporcionar una imagen a una distancia de convergencia adecuada, debido a que esta distancia de la que hablábamos anteriormente es de aproximadamente 10 cm, por lo que haría necesario diseñar unas gafas de profundidad excesiva. Para dar solución a este problema se ha ideado un sistema en el que se generan las dos imágenes con una serie de trasformaciones afines pertinentes, de modo que sea posible corregir esta distorsión provocada por la poca profundidad de las gafas. Además se utilizan unas lentes capaces de aumentar la imagen para que el ojo las perciba adecuadamente y se produzca la fusión y la percepción del mundo 3D. A este tipo de imágenes se las conoce como imágenes estereoscópicas \citep{article:Estereoscopía}. El concepto de imagen estereoscópica no es actual sino que surgió hace tiempo, existiendo juguetes con estas imágenes que datan del siglo anterior.
+
+\subsection{Hardware}
+El hardware que se va a describir a continuación es el correspondiente a las \emph{Oculus Rift Development Kit 2 (DK2)}, que concierne a la versión con la que se ha trabajado. Actualmente existe una nueva versión comercial, de manera que esta versión ha quedado obsoleta. Las diferencias principales con sus rivales como las \emph{HTC Vive} son las características HW que las definen, es decir, tamaño de pantalla, calidad de ésta, etc.
+
+\subsubsection{Pantalla}
+Para representar las imágenes con las que trabaja cuentan con una pantalla con una resolución de 1980x1080 con una latencia de imagen en el rango de los [2,3] ms, lo que garantiza una velocidad de refresco de imagen casi en tiempo real. En la versión DK1, el alto tiempo de latencia provocaba el llamado efecto \emph{Judder} que consiste en un desfase de la señal de audio y vídeo. Basada en la tecnología OLED \cite{wiki:OLED}, se consigue eliminar el efecto \emph{Judder} \citep{article:WikiJudder} y el llamado \emph{Motion Blur} \citep{article:WikiBlur} que tiene lugar en imágenes o vídeos en los que aparece un movimiento rápido.
+
+\begin{figure}[h!]
+  \centerline{
+	\includegraphics[width=0.5\textwidth]{images/motionblur.jpg}
+	\includegraphics[width=0.5\textwidth]{images/imgdk2.jpg}
+   }
+	\caption{Efecto \emph{Motion Blur} en un autobús y pantalla de la versión DK2.\\Fuente:\protect\url{https://upload.wikimedia.org/wikipedia/commons/2/26/London_bus_and_telephone_box_on_Haymarket.jpg}}
+ 	\label{fig:motionblur}
+\end{figure}
+
+
+Para la conexión con el ordenador se utiliza un conector tipo HDMI, lo que permite que en el frontal de las gafas haya un conector Jack de audio. El audio es una señal que se manda junto con el video por un canal HDMI.
+
+
+\subsubsection{Giroscopio y acelerometro}
+La base de todas las gafas de realidad virtual es la capacidad de detección de los movimientos rotacionales de la cabeza junto con el movimiento acorde de la cámara dentro del mundo tridimensional. Hablando exclusivamente de rotaciones, un objeto puede rotar únicamente en torno a tres vectores, ejemplificado en la figura \ref{fig:rotObjets}. Para poder implementar esta funcionalidad, \emph{Oculus Rift} cuenta con un giroscopio de tres ejes y un acelerómetro. Así calcula la dirección de rotación y aceleración del movimiento. Gracias a que los \emph{Smartphones} actuales también tienen estos dispositivos, existen gafas como las \emph{Google Cardboard}.
+
+\begin{figure}[ht!]
+  \centerline{
+	\includegraphics[width=0.5\textwidth]{images/ryp}
+  }
+  \caption{Ejemplo de rotaciones posibles sobre un objeto, en este caso un avión.\\Fuente:\protect\url{https://upload.wikimedia.org/wikipedia/commons/5/54/Flight_dynamics_with_text.png}}
+  \label{fig:rotObjets}
+\end{figure}
+
+\subsubsection{Sensor Infrarrojos}
+Una de las mejoras sobre la versión DK1 es la incorporación de emisores de infrarrojos en la carcasa de las gafas, lo que permite que un sensor que se asemeja mucho a una cámara, figura \ref{fig:dk2sinfra} , detecte los movimientos de una persona relacionados con la profundidad. Es decir, el usuario puede acercarse, alejarse, inclinarse a la izquierda o a la derecha y el sistema lo detectará. Esto es una mejora asombrosa, pues genera mucha más libertad de movimiento y nos permite introducirnos más en los espacios tridimensionales.
+
+\begin{figure}[ht!]
+  \centerline{
+	\includegraphics[width=0.5\textwidth]{images/sensorInfra.jpg}
+  }
+  \caption{Sensor de infrarrojos de la versión DK2.\\Fuente:\protect\url{https://upload.wikimedia.org/wikipedia/commons/9/9c/Oculus_Rift_Development_kit_2_positional_tracker.jpg}}
+  \label{fig:dk2sinfra}
+\end{figure}
+
+\subsubsection{Dependencias de hardware}
+Como ya se ha mencionado antes, las \emph{Oculus Rift/HTC Vive} son dependientes de un ordenador. Tienen conexión HDMI para acceder a la tarjeta gráfica de un ordenador. En realidad son casi como un monitor extra. Casi por que hasta hace no mucho, para determinados juegos, se daba soporte a estos dispositivos configurando las gafas como un monitor externo, aunque de eso se hablará en más detalle en secciones siguientes. 
+
+Por este motivo, se requiere de un ordenador medianamente potente para su uso, hecho que genera un coste económico oculto. Este TFG se ha desarrollado con un ordenador con las características recomendadas por \emph{Oculus Rift}. 
+
+Estas características son:
+\begin{itemize}
+\item Procesador Intel I7 a 3.2Ghz.
+\item 16 Gb de Memoria RAM DDR5.
+\item T.Gráfica \emph{Nvidia GeForce 970X} con 5 Gb DDR5.
+\item HDD 1Tb rotatorio.
+\item Windows 8.1
+\end{itemize}
+
+Los requisitos mínimos de este dispositivo son:
+\begin{itemize}
+\item Procesador Intel I5-4590 o similar
+\item 8 Gb de Memoria RAM.
+\item T.Gráfica \emph{Nvidia GTX 600 serie \ AMD Radeon HD 7000 series}.
+\item Windows 7
+\end{itemize}
+
+\subsection{Software}
+
+Para desarrollar con las \emph{Oculus Rift DK2} el fabricante incluye un SDK bastante completo que proporciona acceso a sus sensores, así como herramientas ya creadas para que el desarrollo sea lo más modular posible. A parte de las descritas a continuación, también existen herramientas para el desarrollo de las \emph{Samsung Gear VR}, unas gafas de realidad virtual para móviles creadas por la compañía para \emph{Samsung}.
+
+\subsubsection{SDK y Runtime}
+Este módulo es el módulo básico que se debe instalar para usar el dispositivo. Contiene los drivers y librerías necesarias para dar soporte \citep{www:OculusDescargas} :
+
+\begin{itemize}
+\item \textbf{Oculus Audio SDK} para dar soporte a la tecnología VST para el tratamiento y procesamiento de audio \citep{wiki:VST} y añadir efectos de audio para obtener más sensación de inmersión. Un ejemplo de esto sería que, si giramos la cabeza y ponemos un oído más cerca de la fuente que el otro, el sistema detecta este hecho y aumenta el volumen del canal estéreo correspondiente.
+\item \textbf{Oculus Platform SDK} para el soporte del motor gráfico y de videojuegos \emph{Unreal Engine}.
+\item \textbf{Oculus PC SDK} proporciona drivers básicos así como ejemplos y herramientas para \emph{Windows}. Existe también un hilo paralelo para \emph{OS X} y antiguamente también para distribuciones \emph{Linux} pero fue retirado cuando \emph{Unity 3D} quitó su soporte para dicho SO. Con el runtime se puede desarrollar en \emph{C++} sin necesidad de un editor de videojuegos.
+\end{itemize}
+
+\subsubsection{Herramientas para desarrollo}
+Esta sección se compone de las herramientas y SDK's para desarrollar videojuegos en \emph{Unity 3D} y \emph{Unreal Engine}.
+
+\begin{itemize}
+\item \textbf{Unreal Engine 4 Integration} para dar soporte a \emph{Unreal Engine 4}.
+\item \textbf{Oculus Utilities for Unity 5} para dar soporte a \emph{Unity 3D}.
+\end{itemize}
+
+\subsection{Configuración del DK2}
+Para desarrollar con el modelo \emph{DK2} primero el usuario debe ajustarse las gafas de manera personal. Dentro del software básico de drivers, hay un editor de perfil que  permite crear y guardar ajustes para cada usuario del dispositivo. Los datos que se guardan son los siguientes:
+
+\begin{itemize}
+	\item \textbf{Distancia entre ojos:} Se calcula la distancia entre el centro del iris de cada ojo. Este es un valor necesario para el cálculo de las distorsiones a generar para obtener la fusión de imágenes. Un mal ajuste hace que veamos borroso el mundo virtual. El propio gestor de perfiles tiene una funcionalidad de test en la que se nos hace una prueba para que se autoajuste este valor.
+	\item \textbf{Altura del cuello respecto al hombro:} Como se ha comentado, \emph{Oculus Rift DK2} incluye un sensor de posición. Este parámetro es un ajuste para dicho sensor.
+	\item \textbf{Altura del usuario:} Este parámetro tiene la misma finalidad y complementa al de la altura del cuello. 
+\end{itemize}
+
+Además de los mencionados anteriormente también se almacena el nombre del perfil, el genero y la edad de dicho usuario.
+
+Por otro lado se cuenta también con dos tipos de lentes distintas: las lentes de tipo A están pensadas para personas que no tienen ningún tipo de problema visual mientras que las de tipo B están pensadas para lo contrario. Una de las limitaciones de estas lentes es que las lentes de tipo B generalizan, pudiendo haber muchas combinaciones distintas de defectos oculares que se solucionen con las lentes adecuadas. Una idea de futuro podría ser que en las ópticas se pudieran personalizar dichas lentes.
+
+\lsection{Unity 3D}
+\emph{Unity 3D} es un software de creación de videojuegos que sigue una filosofía multiplataforma. Dan soporte a casi todos los sistemas actuales: \emph{Linux, OS X, Windows, Android, iOS, Tizen, PlayStation 4} y muchos otros. Por este motivo y por la existencia de un SDK de \emph{Oculus Rift} se ha elegido esta herramienta para desarrollo del TFG. 
+
+\emph{Unity 3D} incluye herramientas para añadir publicidad, hacer análisis estadísticos sobre los jugadores, crear plataformas multijugador y utilizar sistemas de control de versiones. Muchas de estas características se desbloquean al comprar la licencia de uso comercial. En este caso, se ha usado la versión libre, por lo que muchas de estas herramientas no están incluidas.
+
+A continuación se explican algunas de las características más importantes de  \emph{Unity 3D}.
+
+\subsection{C\#, JavaScript y Mono Runtime}
+
+Para el desarrollo de código se usa \emph{C\#} y \emph{JavaScript} que se interpreta en \emph{Mono Runtime}. Este es el secreto de su capacidad multiplataforma. No existe diferencia en las funcionalidades que aporta cada lenguaje a nivel de \emph{Unity 3D}, siendo a gusto del programador el uso de uno u otro. Se aconseja, por otro lado, el uso de \emph{JavScript} para la creación de funcionalidades simples y de fácil diseño, dejando el resto a  \emph{C\#}.
+
+\emph{C\#} tiene varias ventajas, entre la que se encuentra que es un lenguaje tipado y no tipado. Es decir, tiene clases y tipos de datos básicos como int, string, double, etc. También posee un tipo genérico que permite una programación no tipada. Dicho tipo de dato se usa haciendo declaraciones con la palabra reservada \emph{var}. \emph{C\#} es un lenguaje parecido a \emph{Java} desde el punto de vista de que se ejecuta sobre una máquina virtual que traduce a código máquina. La máquina virtual se llama \emph{Common Language Runtime}(CLR) y admite más lenguajes como \emph{F\#} permitiendo crear proyectos mixtos. \emph{Unity 3D} utiliza \emph{Mono Runtime} que es la versión open source de CLR. \emph{Mono Runtime}\citep{article:MonoRuntime} es un interprete que se encarga del manejo de las llamadas a sistema operativo y de la ejecución del código. Maneja la memoria de los programas y su liberación a través del \emph{Garbage Collector}. \emph{C\#} es un lenguaje con orientación a objetos que incluye la característica de la \emph{Herencia Múltiple}, que permite que una clase obtenga propiedades de más de un tipo distinto de clase padre.
+
+Dado que utiliza \emph{Mono Runtime}, se puede usar el IDE \emph{Mono} para programar, siendo este el predilecto en \emph{OS X}, aunque se potencia más el uso de \emph{Visual Studio}, el IDE predilecto de \emph{Windows}. Uno de los defectos de \emph{Visual Studio} es su tamaño, ya que llega a los 20 Gb debido a que incorpora herramientas para desarrollar con el framework \emph{Windows Forms} y Xamarin Forms. Por ese motivo se ha elegido como IDE \emph{Mono}.
+
+\subsection{Descripción de Unity 3D}
+A continuación se describirá el uso y características del desarrollo y programación con \emph{Unity 3D} que es el software con el que se ha gestionado y creado este trabajo.
+
+\subsubsection{Elementos Gráficos: GameObjects y escenas}
+La clase GameObject \citep{www:UnityGameObject} es la clase base de todo elemento gráfico de \emph{Unity 3D}. Incluye funciones para instanciarlo, destruirlo, generar transformaciones sobre él u obtener referencia sobre GameObjects similares. También puede contener en su interior otros GameObjects. Un elemento 2D que represente un botón o un panel sobre el que dibujar también es un GameObject.
+
+Los GameObjects se instancian en lo denominado escena. Una escena es una representación tridimensional en primer lugar del espacio donde se va a representar el juego. Para juegos en 2D también se usan escenas solo que se juega con las cámaras para que no tenga efecto 3D.
+
+Todo conjunto de GameObjects puede guardase en una plantilla para poder reutilizar más adelante. Dichas plantillas se llaman Prefabs y están creadas para realizar un uso y diseño modular de todos los objetos que creemos. Para incorporarlo al juego solo tenemos que pinchar en él en la ventana de assets y arrastrarlo a la posición que deseemos dentro de la escena. 
+
+Parte del SDK de \emph{Oculus Rift} para \emph{Unity 3D} está compuesto de Prefabs que permiten usar el dispositivo con algo tan simple como arrastrar un Prefab a la escena del juego con la que estamos trabajando. En concreto, uno de los Prefabs más útiles que tiene es el de la cámara que ya genera las distorsiones adecuadas para crear imágenes estereoscópicas.
+
+\subsubsection{Clase base de control: MonoBehaviour}
+La clase MonoBehaviour \citep{www:UnityMonobehaviour} proporciona acceso al ciclo de vida que tiene un script (código a ejecutar en una escena) dentro de un GameObject. Similar al ciclo de vida de una aplicación de \emph{Android}. Proporciona un método para inicializar variables y atributos, para liberar recursos, y para ejecutar acciones en cada frame (unidad de refresco de imagen) del juego. También proporciona acceso a funcionalidades de \emph{Unity 3D} como la instanciación de GameObjects. 
+
+El orden de ejecución, de primero a último, es el que se muestra a continuación. De cada apartado se muestran los más relevantes, pues puede llegar a haber varias rutinas por apartado:
+
+\begin{itemize}
+
+\item \textbf{Editor}
+\begin{itemize}
+\item \textsl{Reset} Es el método que se invoca cuando el código es añadido al GameObject.
+\end{itemize}
+
+\item \textbf{Cuando carga la primera escena}
+\begin{itemize}
+\item \textsl{OnLevelWasLoaded} Es el método que se invoca cuando la nueva escena o nivel ha sido cargado. 
+\end{itemize}
+
+\item \textbf{Antes de la actualización del primer frame}
+\begin{itemize}
+\item \textsl{Start} Start es llamado antes de la primera actualización de frame solo si la instancia del script está activada.
+\end{itemize}
+
+\item \textbf{Entre frames}
+\begin{itemize}
+\item \textsl{OnApplicationPause} Es el método que se invoca cuando se pausa la escena
+\end{itemize}
+
+\item \textbf{Orden de actualización}
+\begin{itemize}
+\item \textsl{FixedUpdate} Es el método que se invoca cuando los frames por segundo (FPS) son demasiado bajos.
+\item \textsl{Update} Es el método que se invoca una vez por frame. En esta función se hacen cálculos de movimientos o lógica básica de movimiento.
+\item \textsl{LateUpdate} Es el método que se invoca justo después de Update. Se suele usar en cámaras de tercera persona o similar.
+\end{itemize}
+
+\item \textbf{Renderizado}
+\begin{itemize}
+\item \textsl{OnGUI} Es el método que se invoca cuando ocurre un evento en interfaz gráfica. Dicho evento no tiene porqué ser siempre de tipo input.
+\end{itemize}
+
+\item \textbf{Corrutinas}
+\begin{itemize}
+\item \textsl{yield} Se ejecuta cuando no hay más objetos a los que invocar la función Update.
+\end{itemize}
+
+\item \textbf{Cuando el objeto es destruido}
+\begin{itemize}
+\item \textsl{OnDestroy} Es el método que se invoca cuando el objeto va a ser destruido o eliminado de la escena.
+\end{itemize}
+
+\item \textbf{Cuando se abandona la escena}
+\begin{itemize}
+\item \textsl{OnApplicationQuit} Es el método que se invoca cuando la aplicación se va a cerrar.
+\end{itemize}
+
+\end{itemize}
+
+Estos son los más usados o representativos, pero existen muchos más. Para mas información dirijase a la web de \emph{Unity 3D} donde se explican todos en detalle \citep{article:UnityExec}.
+
+
+\subsubsection{Animaciones}
+Un apartado importante de \emph{Unity 3D} es su capacidad para gestionar y crear animaciones desde el propio editor sin necesidad de terceros, aunque sí permite su importación. Con \emph{Unity 3D} se pueden crear animaciones grabando macros sobre una transformación de un GameObject y controlarlos a través de una máquina de estados. Es decir, se pueden generar diversas animaciones sobre un GameObject, asociar cada una a un estado y definir las transacciones entre estados. Dichas transacciones se pueden ejecutar al tener como soporte un sistema de eventos que se puede configurar (triggers). Un ejemplo de esto es la figuta \ref{fig:unityBones}.
+
+\begin{figure}[h!]
+  \centerline{
+	\includegraphics[width=\textwidth]{images/bones.jpg}
+  }
+  \caption{Pantalla de animación de \emph{Unity 3D}.\\Fuente:\protect\url{https://i.vimeocdn.com/video/459915521_1280x960.jpg}}
+  \label{fig:unityBones}
+\end{figure}
+
+Grabar una macro de animación es muy simple: solo hay que situarse sobre el GameObject que queremos animar y darle a ''añadir nueva animación''. Nos saldrá una ventana como la de la figura \ref{fig:unityBones}. En el cronograma marcamos el 0 como el estado actual del objeto. Pulsamos grabar. Deformamos el GameObject (rotaciones, escalados,etc) y vamos añadiendo marcas de tiempo por cada deformación hasta un estado final. Automáticamente el sistema se encarga de crear la animación haciendo que las deformaciones sean progresivas.
+
+Ya solo nos queda definir cuándo lanzar la animación y eso se hace gracias al sistema de máquina de estados que nos permite definir \emph{Unity 3D}. En él simplemente vamos definiendo estados, partiendo de uno de inicio, y asignado condiciones para que ocurra el cambio de estado. Desde el código vamos lanzado dichas condiciones que pueden ser de dos tipos: triggers (disparadores) o condiciones lógicas.
+
+\subsubsection{Recursos y componentes: Asset Store}
+Una de las principales ventajas de \emph{Unity 3D} es la capacidad para aprovechar el trabajo de otros para poder usarlo en nuestro beneficio personal. Como ya he comentado, el uso de Prefabs permite reutilizar componentes ya creados anteriormente. También se puede llevar a otro punto: existe una tienda virtual, llamada \emph{Asset Store} en la que la comunidad y empresas pueden regalar o vender sus Prefabs y componentes para que otros puedan usarlos. A estos Prefabs y componentes se les llama Assets y van desde terrenos y animaciones a modelos 3D. Además, es la plataforma desde la que los desarrolladores de \emph{Unity 3D} comparten y distribuyen los Assets básicos a los que puede acceder cualquiera que use \emph{Unity 3D}.
+
+\lsection{Requisitos}
+
+Cualquier sistema de software responde a una necesidad. Dicha necesidad debe analizarse por partes de manera que sea más sencilla su implementación. Divide y vencerás. En este apartado se hace justamente eso, se divide el sistema en las funcionalidades y requisitos que debe tener. Hay que constatar que no todos los requisitos tienen el mismo nivel de prioridad y que en este TFG no todos han sido resueltos, ya que como se comentó anteriormente este proyecto está desarrollado con la intención de continuarse y de seguir evolucionando. Por ello se dividirá en requisitos funcionales fundamentales y no fundamentales, que serán pospuestos para una versión dos. Muchos de estos requisitos no funcionales derivan de una falta de tiempo para el desarrollo del sistema.
+
+\subsection{Requisitos funcionales}
+Los requisitos funcionales son todas aquellas funcionalidades o casos de ejecución que el sistema debe ser capaz de realizar y cumplir.
+
+\subsubsection{Fundamentales}
+
+\paragraph{El sistema debe tener un diseño modular para que se pueda modificar con sencillez.}
+La modularidad debe ser fundamental en este sistema para que su evolución sea propicia. Este es uno de los principales motivos por los que se ha elegido \emph{Unity 3D} como entorno de desarrollo. Este entorno nos permite, con sus Prefabs, definir objetos que implementan funcionalidades. En este caso, con Prefabs se implementa un navegador web, un sistema de información de fecha y hora constante, un sistema de menú y un sistema de eventos que generan una interfaz de uso con el usuario.
+
+\paragraph{El sistema debe dar capacidad al usuario de interaccionar con los elementos del escenario que le rodea.}
+El usuario ha de ser capaz de interaccionar con lo que le rodea dentro de la escena del mundo virtual. Para ello se han desarrollado los siguientes dos módulos.
+\begin{itemize}
+
+
+
+
+\item El primer módulo permite una interacción del usuario y los componentes propios gráficos del entorno virtual.
+\item El segundo permite una emulación de eventos de click de cara al sistema y de pulsación de teclas de teclado, es decir, emula un click de ratón físico y una pulsación de tecla física. En la sección \ref{sect:desarrolloSistema} se explicarán los motivos.
+
+\end{itemize}
+
+
+\paragraph{El sistema debe dar al usuario en todo momento información de fecha y hora actuales.}
+El sistema proporciona información de fecha y hora constante al presentar dichos valores como dos paneles flotantes a la vista del usuario.
+
+\paragraph{El sistema debe disponer de una funcionalidad simple para apagarse.}
+El sistema dispone de un menú en el que existe una opción para apagar el sistema. Hay que ser cautelosos en este punto, pues una persona con tetraplejía puede apagar el sistema pero seguirá con las gafas puestas y con la vista tapada por una pantalla en negro. Debe haber presente un cuidador en este punto.
+
+\paragraph{El sistema debe dar una funcionalidad para navegar por Internet.} 
+El sistema dispone de un navegador con el que interaccionar basado en la tecnología \emph{Chromium} \citep{article:Chromium} de la empresa \emph{Thunderbeast Games LLC} \citep{article:UWEBKIT} que ha sido modificado para adaptarlo al proyecto en cuestión.
+
+\subsubsection{No fundamentales}
+
+\paragraph{El sistema debe ser capaz de realizar un autoajuste en función de la discapacidad del usuario.}
+Este requisito se ha clasificado como no fundamental debido a que la complejidad que supone se escapa del ámbito del TFG. El coste de desarrollo de esta funcionalidad es demasiado elevado. Como se ha visto en la sección \ref{sect:discMotoras} existe un gran número de casos a tener en cuenta. Como punto de partida de desarrollo de esta funcionalidad sería la implementación de un sistema de adaptación al movimiento del cuello del usuario en base a un algoritmo de aprendizaje. Muchos de estos puntos por sí solos podrían ser objeto de estudio de un TFG.
+
+\paragraph{El sistema debe permitir configurar el aspecto visual del escenario principal que rodea al usuario.}
+Uno de los principales motivos por los que Steve Jobs tuvo éxito con su \emph{Macintosh} fue por la idea de añadir una interfaz de usuario amigable y personalizable, alejando a los computadores de la típica terminal de fondo negro y letra verde. Esto demuestra que el éxito de la aceptación del sistema por parte del usuario depende en parte del aspecto y las posibilidades de éste de ser adaptado a los gustos del individuo.
+
+\subsection{Requisitos no funcionales}
+Los requisitos no funcionales responden a las necesidades del sistema que no influyen en una funcionalidad o en un caso de uso que debe cumplirse. Engloba características de tipo hardware, económicas o similares.
+
+\subsubsection{Fundamentales}
+\paragraph{El sistema debe ser capaz de ejecutar el mayor número de dispositivos posible con fluidez.}
+Para que se cumpla este requisito es necesario entender que es lo computacionalmente más costoso para el sistema. El mayor coste está en el coste computacional de generar los gráficos. Por ello, el diseño gráfico se ha hecho con texturas sencillas y pocas animaciones. En fases de desarrollo se observó, por ejemplo, que al poner muchos árboles en el entorno 3D con animaciones de viento, la imagen en el \emph{Oculus Rift} iba a saltos.
+
+\subsubsection{No fundamentales}
+\paragraph{El sistema debe poder ejecutarse en móviles}
+Este requisito es deseable y gracias a \emph{Unity 3D} es relativamente sencillo de cumplir. El problema por el cual se ha delegado a un requisito no fundamental es debido a la complejidad de cumplir algunos de los requisitos funcionales que llevarían el desarrollo de este trabajo al doble de tiempo. Se especificarán estos motivos en la sección \ref{sect:desarrolloSistema}.
+
+\lsection{Diseño del sistema}
+El diseño de este sistema es algo complejo dado que está muy influenciado por los propios patrones que fuerza \emph{Unity 3D} a seguir. Primero se explicará la estructura en la que se ha dividido el código en función de las funcionalidades de cada nivel de la jerarquía. A continuación se explicarán los patrones \emph{Façade}, \emph{Modelo-Vista-Controlador} y \emph{Composite} que son el patrones base que se usan.
+
+\subsection{Estructura del código}
+En \emph{Unity 3D}, todo el código, Prefabs o similar están en la carpeta denominada \emph{Assets}. Dentro de esta carpeta se encuentran los siguientes directorios:
+
+\subsubsection{Cardboard}
+En este directorio está el SDK básico para la generación de una versión destinada a dispositivos móviles. Incluye scripts de corrección de distorsión para las imágenes estereoscópicas así como un Prefab. Además da una herramienta de debug que permite hacer pruebas en etapa de desarrollo sin tener a mano unas \emph{Google Cardboard}.
+
+\subsubsection{Scenes} 
+Aquí se encuentra la escena de \emph{Unity 3D} donde se desarrolla toda la acción. Se recuerda que es en las escenas donde se posicionan los \emph{GameObjects} en los que se basa el sistema.
+
+\subsubsection{System} 
+\label{subsection:System}
+En esta carpeta están las implementaciones que se han realizado en este TFG. Están las animaciones desarrolladas, los fuentes sobre los que se ha basado este TFG y las implementaciones creadas a partir de estos. 
+
+\begin{itemize}
+\item \textbf{Animations.} En este directorio se almacenan las animaciones creadas para este TFG. Existen en este momento dos: la primera corresponde a la animación de la mirilla para dar un feedback al usuario cuando se vaya a ejecutar un evento de click y la segunda es la animación destinada al despliegue del menú del sistema.
+
+\item \textbf{PeterKoch.} En este directorio se almacena el software obtenido de \citep{article:Gaze} que se usa para implementar un sistema Gaze Input, el necesario para la interacción con los objetos tridimensionales del sistema. Se basa en un \emph{RayCaster}, que no es más que un vector que sale perpendicular a la cámara, cuya función es lanzar y emitir un evento que será registrado por el sistema. Es lo que se usa, por ejemplo, en un videojuego de disparos para que el sistema sepa a qué punto se esta apuntando.
+
+\item \textbf{Prefab.} En este directorio se almacenan aquellos Prefabs que están creados para añadir de manera sencilla funcionalidades al sistema. Existe un Prefab que incluye la cámara del sistema con la fecha, la hora del sistema y la mirilla con la que apuntar. De este Prefab existen dos versiones, una para Pc's y otra para móviles.
+
+\item \textbf{Scripts.} En este directorio se almacenan aquellos scripts para el desarrollo de las funcionalidades del juego, por ejemplo, el script que toma la fecha y hora del sistema y la plasma en vistas.
+
+\end{itemize}
+
+Existen más directorios que se omiten por ser irrelevantes. En dichos directorios hay componentes como el cielo que se presenta en el juego o ejemplos de uso de los componentes.
+
+\lsection{Desarrollo del sistema}
+\label{sect:desarrolloSistema}
+
+Para el desarrollo del sistema se ha usado el patrón de diseño \emph{Façade}, dado que permite enmascarar el uso de uno o varios sistemas complejos tras una interfaz simple y constante \citep{article:UML} permitiendo así que se puedan cambiar de manera simple dichos sistemas complejos sin que se vea afectado el sistema global. Este patrón se usa en el desarrollo del sistema de emulación de eventos de click y de pulsación de teclas del teclado. En el anexo \ref{Anexo:codigo} se puede observar el código en el que se implementa este desarrollo.
+
+Existe otro tipo de eventos, que son eventos de colisión del \emph{RayCaster} (explicado en la sección \ref{subsection:System}) con objetos, que son manejados por el propio sistema de \emph{Unity 3D} y que por tanto escapan a la posibilidad de diseño siendo ésta heredada del motor de gestión propia de \emph{Unity 3D}. 
+
+Los patrones que utiliza \emph{Unity 3D} que más se pueden percibir y que son los que más trata el usuario son los siguientes:
+\begin{itemize}
+\item \textbf{Composite} Este patrón se caracteriza por su facilidad para implementar herramientas complejas a partir de elementos más sencillos. Suele estar presente en aquellos diseños de interfaces gráficas. En caso de \emph{Unity 3D} no es distinto. Aunque este patrón de diseño no se haya usado en el código de manera estricta, sí ha sido aplicado en el diseño del menú, por ejemplo. El menú se compone de un canvas (panel sobre el que dibujar) al que se le añaden botones \citep{article:UMLMVC}.
+
+\item \textbf{Modelo-Vista-Controlador (MVC)} Este patrón se basa en el concepto de la modularidad. La idea es separar la representación física de un componente, de su representación conceptual y de su implementación final. Es el modelo básico de \emph{Unity 3D} dado que es como se enfoca a usar los GameObject. Un diseño bajo este patrón se corresponde de tres partes. La primera es el \emph{Modelo}. El \emph{Modelo} corresponde con la estructura de los datos a representar. La segunda parte corresponde con la \emph{Vista}. La \emph{Vista} es la representación de dicho modelo. Por último está el \emph{Controlador} que es el puente de unión entre ambos. En \emph{Unity 3D} el GameObject es la vista del elemento que percibe el usuario. Por detrás están los scripts desarrollados que extienden de \emph{Monobehaviour}. Es decir, la clase \emph{Monobehaviour} es el modelo, el GameObject de la escena la vista y el software que invoca las funciones heredadas de la clase \emph{Monobehaviour} es el controlador \citep{article:UMLComposite}.
+
+\end{itemize}
+
+Estos patrones son los que más afectan al usuario a la hora de realizar una funcionalidad en \emph{Unity 3D} pero no quiere decir que sean los únicos. \emph{Unity 3D} es un sistema muy complejo que en su fuero interno aparecen más patrones como \emph{Observer}, \emph{Coroutines}, \emph{Singleton},etc.
+
+\lsection{Diagrama de clases}
+
+En las figuras \ref{fig:diagClases2} y \ref{fig:diagClases} se pueden observar los diagramas de clases que corresponden al diseño de este trabajo. 
+
+En la figura \ref{fig:diagClases2} se aprecia las vistas del diseño, según MVC. Las clases que descienden de \emph{GameObject} son los objetos tridimensionales de la escena. Están compuestas por otros componentes que también descienden de la clase \emph{GameObject} y que se omiten por que no aportan valor (botones, entradas de texto, etc). Un ejemplo de la fusión de los patrones \emph{Composite} y \emph{MVC}.
+
+\begin{figure} [h!]
+\centering	
+	\includegraphics[width=\textwidth]{images/diagramaClases2.png} 
+  \caption{Diagrama de clases de la aplicación. Muestra las Vistas del patrón MVC}
+  \label{fig:diagClases2}
+\end{figure}
+
+En la figura \ref{fig:diagClases} se observa el diagrama de clases orientado a los controladores, según MVC. A continuación se añade una breve descripción de las clases mas relevantes:
+
+\begin{itemize}
+	\item Las clases que descienden de \emph{Monobehaivour} son independientes porque es el propio sistema el que ejecuta el método \emph{OnUpdate} una vez por frame. 
+	\item La clase \emph{InfoPanelController} se encarga de mostrar la hora y la fecha.
+	\item La clase \emph{MenuTrigger} se encarga de controlar que aparezca o desaparezca el menú y de las opciones de éste.
+	\item La clase \emph{Quit} se encarga de cerrar la aplicación. La clase \emph{WebTexture} se encarga de controlar el navegador de Internet. 
+	\item Las clase \emph{GazeInputModule} es la que se encarga de la interacción con los GameObject del sistema. Además maneja la funcionalidad para activar la animación de la mirilla. Implementa el patrón \emph{Façade} al usar los módulos que permiten emular el evento físico de click y pulsación de teclado. Se decidió el uso del patrón \emph{Façade} debido a la intención de, en un futuro, sacar una versión para dispositivos móviles. Gracias a este patrón, simplemente cambiando las clases \emph{MouseOperator} y \emph{KeyboardOperator} por dos clases específicas para la plataforma móvil (una que reproduzca un evento táctil en la pantalla y otra que escriba en el buffer de texto del sistema) se consigue adaptar el sistema a dispositivos móviles.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DIAGRAMA DE CLASES%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{landscape}
+\begin{figure}  
+\centering	
+	\includegraphics[height=0.8\textwidth]{images/diagramaClases.png} 
+  \caption{Diagrama de clases de la aplicación. Muestra los Controladores del patrón MVC}
+  \label{fig:diagClases}
+\end{figure}
+\end{landscape}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DIAGRAMA DE CLASES%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\lsection{Casos de uso}
+
+A continuación se expondrán distintos casos de uso de la aplicación que han servido como referencia de diseño e implementación de este trabajo. En dichos casos de uso se pueden observar dos actores: El actor \emph{Usuario}, es una persona en situación de discapacidad que no puede ponerse por si solo los cascos de VR. Por ello aparece el segundo actor que es un cuidador. 
+
+El primero de los casos es un caso de uso simple: el usuario debe ser capaz de interaccionar con un objeto del mundo virtual. Para ello se diseña un caso de uso en el que el usuario tiene que abrir un menú desplegable y a posterior seleccionar la opción \emph{Salir} (figura \ref{fig:caso1}).
+
+\begin{figure}[H]
+\centering	
+	\includegraphics[width=\textwidth]{images/caso1.png} 
+  \caption{Diagrama de caso de uso 1}
+  \label{fig:caso1}
+\end{figure}
+
+El segundo caso de uso es en el que se representa la apertura del navegador y el cierre del mismo. El usuario debe abrir el menú desplegable, seleccionar la opción \emph{Open Browser} y esperar a que este se abra. A continuación debe interaccionar con el mismo botón del menú para cerrar dicho navegador (figura \ref{fig:caso2}).
+
+\begin{figure}[H] 
+\centering	
+	\includegraphics[width=\textwidth]{images/caso2.png} 
+  \caption{Diagrama de caso de uso 2}
+  \label{fig:caso2}
+\end{figure}
+
+El tercer caso de uso es en el que se representa la apertura del navegador y la navegación por Internet. Para ello el usuario debe abrir el navegador, seleccionar el campo donde escribir la URL, interaccionar con el teclado para escribir la url \emph{www.youtube.es}, darle al botón \emph{Go} para cargar la página, seleccionar un vídeo a reproducir y después cerrar el navegador y el sistema (figura \ref{fig:caso3}).
+
+\begin{figure}[H] 
+\centering	
+	\includegraphics[width=\textwidth]{images/caso3.png} 
+  \caption{Diagrama de caso de uso 3}
+  \label{fig:caso3}
+\end{figure}
+
+En el anexo \ref{Anexo:casos} se encuentra una colección de figuras del sistema que representan cada caso de uso. Dicho anexo está dividido en secciones que corresponden a cada caso descrito.
+\newpage
+
+\lsection{Problemas encontrados y soluciones}
+\label{sec:problemas}
+En el desarrollo de este TFG surgió un contratiempo que tuvo una gran repercusión en el proyecto. El problema era que la funcionalidad para implementar un navegador web no estaba soportada por \emph{Unity 3D}, lo que obligó a buscar un software de terceros llamado \emph{uWebKit}, pues el desarrollo de un navegador está fuera del ámbito de este TFG dado que su tiempo estimado de desarrollo es demasiado alto. La consecuencia del uso de este software fue tener que dejar de lado el desarrollo para dispositivos móviles al no dar este software de terceros soporte a estas plataformas. Dicho software es de pago, siendo el coste de su licencia de unos 150\EUR. Afortunadamente, tras hablar con la empresa responsable por correo electrónico y contarles las intenciones de este TFG y su finalidad académica, decidieron proporcionar una licencia de desarrollo gratis \citep{article:UWEBKIT}. 
+
+Tras esto, hubo que adaptar dicho software a las necesidades de este TFG pues no estaba destinado al uso de un método de entrada como el usado en este trabajo. EL método de entrada esperado para este software era un ratón y un teclado. Por este motivo fue necesario desarrollar un módulo capaz de emular eventos de click en el sistema y otro módulo capaz de emular el evento que produce una pulsación de una tecla del teclado. Para ello se usaron dos \emph{DLL} (una teclado, otra ratón) que invocan llamadas al sistema para emular estas funcionalidades. 
+
+El software de terceros utilizado \citep{article:UWEBKIT} usa la posición del ratón de la siguiente manera: obtiene de \emph{Unity 3D} la posición del ratón respecto a la escena y la adapta al sistema de referencia de la web. Por eso una vez resuelto el contratiempo de la emulación de clicks hubo que enfrentarse al problema de transformar la posición de la mirilla a la posición del ratón. Esto se consiguió gracias a los \emph{RayCaster} de \emph{Unity 3D} que básicamente proporcionaban información sobre las coordenadas a donde se apunta respecto a la escena. Solo fue necesario modificar que en lugar de obtener la posición inicial del ratón, la obtuviera de este \emph{RayCaster}.
+
+Antes de desarrollar la funcionalidad con este software se indagó en otras opciones de software libre como \emph{Awesomium} \citep{article:Awesomium}. Aunque existe un apartado de esta herramienta destinado a \emph{Unity 3D}, está para una versión obsoleta (versión 3.4f) con lo que no se puede usar en la última versión de \emph{Unity 3D} (5.2.1f) que es con la que se ha desarrollado este trabajo. La posibilidad de bajar de versión quedó descartada pues tanto el SDK de \emph{Google Cardboard} como el de \emph{Oculus Rift} no daban soporte a tales versiones de \emph{Unity 3D}.
+
+Se exploraron otras opciones como el proyecto \emph{Chromium} \citep{article:Chromium} pero no se podía incluir de manera rápida a \emph{Unity 3D} y en concreto a \emph{C\#}.
+
+Para versiones móviles existen alternativas adecuadas. Android ofrece un webViewer de manera nativa y en iOS está implementado \emph{Safari} para uso de los desarrolladores con lo que no es difícil implementar estas funcionalidades en dichas plataformas. No se ha implementado debido a la falta de tiempo.

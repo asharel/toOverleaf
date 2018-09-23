@@ -1,0 +1,35 @@
+\chapter{Conclusiones, discusión y trabajo futuro}
+\label{chap:conclusiones}
+
+Tras hacer este trabajo se puede sacar como conclusión que el desarrollo de un sistema tan amplio esconde muchos problemas que surgen con el paso del tiempo y el desarrollo del mismo. Aun así he podido sentar las bases y generar una herramienta útil y que ayude a las personas. Los dos experimentos realizados han demostrado que, aunque aun le queda mucho camino por recorrer a este sistema, actualmente puede ser utilizado con la esperanza de buenos resultados. El primer experimento a confirmado que hay que tener cuidado con los efectos secundarios de sistemas de VR. El segundo experimento ha confirmado que con este sistema se interacciona con las TIC de siete a cinco veces más lento en valor promedio respecto al uso de teclado y rat\'on. Aunque, teniendo en cuenta el sector de la sociedad para el que va dirigido y sus dificultades, es un rango aceptable aunque mejorable. La solución al problema de acercar las TIC a las PSD es difícil pero no imposible y la tecnología avanza sin cesar.
+
+No sería posible realizar un trabajo como este sin la previa documentación y estudio de los sistemas a utilizar. Se parte de la base del desconocimiento total de dichos sistemas, como por ejemplo \emph{Unity 3D}. Esta tarea de documentación y aprendizaje ha sido muy costosa en tiempo y en esfuerzo, siendo imposible de realizar si no llegara a ser por cursos online y videotutoriales de Internet \citep{article:Tutellus}. Aun así, el desarrollo de este sistema me ha permitido dar un paso adelante en mi formación. Estos son los conocimientos adquiridos en desarrollo de este trabajo:
+
+\begin{itemize}
+	\item \textbf{Unity 3D}
+	\item \textbf{C\#}
+	\item \textbf{JavaScript en profundidad}
+	\item \textbf{Teoría del diseño de videojuegos y espacios tridimensionales}
+	\item \textbf{Nuevos patrones de diseño (Façade,Proxy,etc)}
+	\item \textbf{Uso de sistemas de realidad virtual completa como Oculus Rift}
+	\item \textbf{Latex}
+\end{itemize}
+
+He podido comprobar de primera mano cómo una buena planificación y un buen diseño pueden llegar a ser fundamentales. Cuando inicié este TFG y decidí hacer un módulo para la cámara de Android y otro para la cámara de \emph{Oculus Rift} no sabía que tendría que dejar a medias el desarrollo para Android debido al problema del navegador mencionado. Esto podría haberse vuelto un problema verdaderamente complicado si no llega a ser por el diseño modular.
+
+Por otro lado, he podido profundizar más en un tema que me interesa como es la realidad virtual y encauzar mi futuro hacia la investigación. Quiero recalcar en la cantidad de investigación y pruebas que he tenido que superar y realizar para terminar con el software que se describe en esta memoria.
+
+Como comenté en la introducción de esta memoria, este trabajo tiene la férrea intención de marcar las bases de una herramienta que ayude a las personas. Por este motivo, su desarrollo debe continuar tanto por mi parte como por la de la comunidad, o al menos eso espero. Teniendo en cuenta los problemas que me han surgido en el desarrollo, establezco a través de este apartado los que yo creo que deberían ser los pasos a seguir para el crecimiento y trabajo futuro de esta herramienta:
+
+\begin{itemize}
+\item \textbf{Algoritmo predictivo de movimiento en ciclo cerrado.} Las PSD sufren distintos tipos de impedimentos. Hay casos de parálisis parcial de los movimientos cefálicos que produce que estos movimientos no sean fluidos. El desarrollo de un algoritmo de aprendizaje y adaptación para cada caso aportaría al sistema una funcionalidad que ayudaría muchísimo a este sector. 
+
+\item \textbf{Desarrollar un navegador para móviles.} Este problema fue una desilusión por mi parte, pues tenía la intención de poder sacar una versión para móvil a la par que para ordenador. Lamentablemente, esta funcionalidad no está integrada en \emph{Unity 3D} y el coste en tiempo que supone para su desarrollo es amplio. Herramientas como \emph{Awesomium} \citep{article:Awesomium} y \emph{Chromium} \citep{article:Chromium} pueden ser un buen punto de partida. La idea de generalizar este trabajo a un dispositivo móvil a mi parecer es muy atractiva, dado que el coste del sistema completo (gafas vr + software) se reduce drásticamente.
+
+\item \textbf{Desarrollar nuevos módulos como clientes de correo, editores de texto,etc} Esta herramienta proporciona una funcionalidad básica: navegar por Internet. Aun así se podrían desarrollar más módulos que proporcionen nuevas herramientas como un cliente de correo, un editor de textos o un sistema de archivos.
+
+\item \textbf{Incluir nuevos sistemas de entrada.} Se puede incluir más hardware que permita añadir más funcionalidades. Como se ha visto en la sección \ref{sec:RVYDisc}, existen muchos proyectos que ayudan a las personas con discapacidad. Se podría incluir un sistema de seguimiento de ojos (más conocido en inglés como \emph{Eye Tracking}) que permita ver a dónde se está dirigiendo la mirada y mover la cámara acorde a ello. También se pueden incluir sistemas con \emph{BCI} que permitan detectar determinados tipos de señales en las ondas del cerebro ante estímulos proporcionados en el mundo virtual.
+
+\item \textbf{Mejorar la adaptación del módulo web.} Aunque el módulo encargado de cargar las webs es operativo, la algoritmia encargada de interaccionar con el es escasa permitiendo emular solamente eventos de click izquierdo. La web evoluciona de manera dinámica y eventos como arrastrar y soltar, mantener pulsado o hacer click derecho están a la orden del día.
+\end{itemize}
+\newpage \thispagestyle{empty} % Página vacía 

@@ -1,0 +1,115 @@
+\chapter{Experimentos Realizados y Resultados}
+\label{chap:experimentos}
+
+En este apartado se explicar\'an los dos experimentos realizados y su resultado. El primero es un estudio simple sobre los efectos del uso de gafas de realidad virtual y el segundo es un estudio de comodidad y usabilidad del usuario final.
+
+\lsection{Estudio de efectos de las gafas de realidad virtual}
+\label{sect:rv_sickness}
+
+El objetivo de este estudio es entender c\'omo afecta el uso de un HDM en las personas que lo van a usar. Existen multitud de estudios que demuestran que el uso de la realidad virtual puede provocar mareos o distorsi\'on de la realidad \citep{article:VRSickness}. En este experimento se ha escogido un conjunto de personas sin ning\'un problema motor. La idea es proporcionar al usuario un est\'imulo dentro de un mundo virtual con la intenci\'on de marear y provocar una distorsi\'on de la realidad.
+
+Para esta prueba se ha utilizado un videojuego de control de un helic\'optero en un PC. El escenario en el que se sit\'ua el helic\'optero es una isla con un portaaviones y una plataforma de aterrizaje en el agua. Adem\'as, en el centro de la isla, pero a una considerable altura, hay un globo con cajas colgando y un misil dando vueltas alrededor del globo. Este espacio virtual no ha sido creado por mi sino que es una demo destinada al uso de \emph{Oculus Rift}. Su nombre es \emph{Heli-Heli} \citep{article:HeliHeli}.
+
+Para este peque\~no estudio se ha utilizado las \emph{Oculus Rift DK2} como dispositivo HMD. Para controlar el helic\'optero se usa un joystick de la casa \emph{Thrusmaster}. Se utilizan tambi\'en unos cascos de audio para obtener una sensaci\'on mayor de inmersi\'on.
+
+\subsection{Metodolog\'ia}
+La metodolog\'ia de este experimento es bastante sencilla: primero se ajustan las \emph{Oculus Rift} de manera personalizada creando un nuevo perfil por usuario. Adem\'as, se tiene en cuenta si el usuario tiene alg\'un tipo de problema visual para seleccionar las lentes de tipo A o B, siendo las de tipo B para personas con defectos visuales. Se toma nota del tipo de defecto visual que tiene el usuario en caso de tenerlo y de si suele jugar habitualmente a videojuegos (denotado como si es \emph{Gamer}). Se le ponen las \emph{Oculus Rift} al usuario y se le explica en qu\'e consistir\'a el experimento. Por \'ultimo se colocan unos cascos de audio para obtener una mayor sensaci\'on de inmersi\'on en el juego.
+
+A continuaci\'on se realiza la prueba: se deja al usuario entre cinco y diez minutos de vuelo libre para que se habit\'ue al entorno virtual. El tiempo var\'ia en funci\'on de la pericia del usuario. A continuaci\'on, el evaluador toma los controles del helic\'optero pudiendo ver el mundo virtual en el monitor del usuario sin tener que quitarle las gafas. El evaluador empezar\'a a realizar movimientos bruscos con el helic\'optero hasta provocar que este se descontrole y se estrelle en el suelo. Esta parte no dura m\'as de tres minutos. R\'apidamente, tras estrellar el helic\'optero, se le quita al usuario las gafas y los cascos de audio. En la URL del sistema ( \url{https://www.dropbox.com/sh/8t9zp9l3xyq49dt/AAAY5N9I96hA9H5zjL4hzKUpa?dl=0}) se encuentra un v\'ideo en el que se muestra un ejemplo de este experimento. 
+
+Se le pregunta al usuario si ha sentido v\'ertigo, mareos y/o distorsi\'on de la realidad.
+
+\subsection{Resultados}
+Este experimento se realiz\'o a seis individuos que dieron los siguientes resultados:
+
+\begin{table}[htb]
+	\centering
+    \scriptsize
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\multicolumn{5}{|c|}{Resultados} \\ \hline
+		Tipo Lente & Gamer & V\'ertigo & Mareos & Distorsi\'on Realidad\\
+		\hline
+		B & S\'i & No & S\'i & No\\ \hline
+		B & No & No & S\'i & S\'i\\ \hline
+		A & No & No & No & S\'i\\ \hline
+		A & S\'i & No & S\'i & No\\ \hline
+		B & No & No & S\'i & S\'i\\ \hline
+		A & S\'i & No & S\'i & No\\ \hline
+	\end{tabular}
+	\caption{Resultados de test de efectos de las \emph{Oculus Rift DK2}. La primera columna corresponde al tipo de lente. La segunda columna a la pregunta de si el usuario suele jugar a videojuegos. La tercera columna corresponde a la pregunta de si tras la prueba, el usuario ha sufrido v\'ertigo. La cuarta columna a si a sufrido mareos. La quinta columna representa la respuesta a la pregunta de si el usuario ha sufrido distorsi\'on de la realidad.}
+	\label{tabla:test1}
+\end{table}
+
+\subsection{Conclusiones}
+
+Tras observar los datos de la tabla \ref{tabla:test1}, aunque sean poco representativos dado el peque\~no tama\~no muestral, podemos sacar como conclusi\'on que los usuarios no tienen sensaci\'on de v\'ertigo dada la altura del helic\'optero virtual. Esto se puede explicar razonando que la sensaci\'on de inmersi\'on no es lo suficientemente alta. No tenemos realmente sensaci\'on de altura. Por otro lado, casi todos los usuarios se marearon debido a los r\'apidos movimientos del helic\'optero al dar tumbos.
+
+Tambi\'en se observa que los usuarios que tienen tendencia a jugar habitualmente a videojuegos est\'an m\'as acostumbrados a escenarios 3D y no tienen tanta distorsi\'on de la realidad al hacer el cambio repentino del mundo tridimensional al real. Esto demuestra que este sistema tiene una etapa de entrenamiento y que la capacidad para usarlo durante m\'as tiempo va incrementando con su uso.
+
+
+Estos resultados nos dan a entender que el uso prolongado de un sistema de VR es perjudicial. Si nos fijamos en la tabla \ref{tabla:test1} podemos observar como todos los usuarios menos uno sufri\'o de mareos. \emph{Oculus Rift} muestra al inicio de cualquier aplicaci\'on un mensaje de advertencia del uso prolongado de su sistema. En este trabajo esto es un punto muy importante a tener en cuenta pues una PSD no tiene la capacidad para quitarse por si solo las gafas. Debe estar bajo la supervisi\'on de un cuidador.
+
+\lsection{Estudio de comodidad y usabilidad del sistema}
+\label{sect:rv_sickness}
+
+Por \'ultimo se ha realizado un test de usabilidad. Las herramientas de accesibilidad van muy por detr\'as del uso com\'un del PC por lo que cabe esperar que esta herramienta frente a un uso convencional del PC sea m\'as lenta. Para hacer esta comparativa se han seleccionado otra vez usuarios que no tienen ning\'un problema o trastorno de movimiento dado que realizar estas pruebas con personas en situaci\'on de discapacidad es demasiado dif\'icil debido la preparaci\'on necesaria, los permisos y los tramites burocr\'aticos´e.
+
+Para esta prueba se utiliza el sistema desarrollado. Cuenta de un men\'u desplegable, al que se accede a trav\'es del sistema de interacci\'on con la mirada, con una opci\'on para abrir el navegador. Un ejemplo del despliegue y de la selecci\'on de la opci\'on para abrir el navegador se puede ver en el anexo \ref{Anexo:caso3}.
+ 
+El escenario f\'isico de este sistema es un PC y las \emph{Oculus Rift DK2}.
+
+\subsection{Metodolog\'ia}
+La idea es contrastar el sistema frente al uso convencional de un PC. Para ello primero se temporiza el tiempo que tarda en realizar una tarea determinada con un sistema de entrada com\'un y al que est\'a acostumbrado, es decir, teclado y rat\'on. Luego se hace una medici\'on de lo que tarda el usuario con el sistema actual tras haberle explicado verbalmente, sin previo entrenamiento (SE), como utilizar el sistema. A continuaci\'on se le da entre tres y cinco minutos de uso libre con el sistema tras los cuales se realiza otra medici\'on de tiempo. La intenci\'on con estos minutos de uso libre es que el usuario se adapte al sistema y entrene con \'el (CE).
+
+La tarea a realizar es la misma en los tres pasos y consiste en entrar al portal de \emph{Youtube} a trav\'es de la URL \emph{www.youtube.es}, en el buscador escribir la palabra \emph{eps} y seleccionar el primer video.
+
+Para la primera parte se realiza dicha tarea con el navegador \emph{Mozilla Firefox} y el teclado f\'isico. La segunda y tercera parte se realiza con el software presentado para este TFG usando la opci\'on de navegador y el teclado implementado. Un ejemplo de esto puede verse en el anexo \ref{Anexo:caso3}. 
+
+En la URL del sistema (URL!!!) se encuentra un v\'ideo en el que se muestra un ejemplo de este experimento.
+
+\subsection{Resultados}
+
+Este experimento se realiz\'o con diez individuos acostumbrados al uso de las TIC pero sin previa noci\'on del sistema presentado en este TFG. Se obtuvieron los siguientes resultados:
+
+\begin{table}[H]
+	\centering
+    \scriptsize
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		\multicolumn{4}{|c|}{Resultados} \\ \hline
+		Tipo Lente & T.Firefox & T.Sistema (SE) & T.Sistema (CE)\\
+		\hline
+		B & $19.66$ & $146.26$ & $45.06$\\ \hline
+		A & $15.03$ & $142.21$ & $60.26$\\ \hline
+		A & $12.49$ & $116.02$ & $59.96$\\ \hline
+		B & $13.57$ & $83.33$ & $93.16$\\ \hline
+		A & $14.75$ & $134.09$ & $115.31$\\ \hline
+		A & $20.39$ & $112.57$ & $111.44$\\ \hline
+		B & $16.79$ & $97.07$ & $80.06$\\ \hline
+		A & $13.60$ & $106.46$ & $83.22$\\ \hline
+		A & $14.71$ & $56.29$ & $55.05$\\ \hline
+		A & $16.54$ & $77.17$ & $71.36$\\ \hline
+	\end{tabular}
+	\caption{Resultados de test de comodidad y usabilidad. La primera columna corresponde al tipo de lente usada. La segunda columna corresponde al tiempo usando teclado, rat\'on y el navegador \emph{Mozilla Firefox}, la tercera columna corresponde a los tiempos usando el sistema de este trabajo sin entrenamiento, la cuarta columna corresponde a los tiempos del sistema desarrollado en este trabajo con entrenamiento de tres a cinco minutos. Resultados de tiempos en segundos. }
+	\label{tabla:test2}
+\end{table}
+
+\begin{table}[H]
+	\centering
+    \scriptsize
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\multicolumn{3}{|c|}{Media de Resultados} \\ \hline
+		T.Firefox & T.Sistema (SE) & T.Sistema (CE)\\
+		\hline
+		$15.75 \pm 2.61$ & $107.15 \pm 29.34$ & $77.49 \pm 23.72$\\ \hline
+	\end{tabular}
+	\caption{Medias y desviaci\'on est\'andar de los datos obtenidos en la tabla \ref{tabla:test2}. Resultados de tiempos en segundos. }
+	\label{tabla:test3}
+\end{table}
+\subsection{Conclusiones}
+
+Tras observar los datos de las mediciones mostradas en la tabla \ref{tabla:test2}, podemos sacar en claro que, como se esperaba, los tiempos entre el uso de un rat\'on y teclado son mucho menores que los del sistema desarrollado en este trabajo. Por otro lado tambi\'en se observa que con solo escasos tres minutos de aprendizaje los tiempos de uso se reducen bastante.
+
+Queda claro que este sistema necesita de entrenamiento por parte del usuario. Aun as\'i permite la interacci\'on con las TIC en unos tiempos dentro de un marco aceptable. Estos tiempos podr\'ian disminuirse aun mas mejorando la algoritmia de determinados componentes as\'i como innovando nuevas formas de interacci\'on que no sean las descritas en este trabajo.

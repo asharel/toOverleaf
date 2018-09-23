@@ -1,0 +1,189 @@
+%% Los margenes, tipo de hoja y estilo BOOK
+\documentclass[a4paper,11pt,twoside,openright,titlepage]{book}
+\usepackage[a4paper,left=1in,right=1in,top=0.6in]{geometry}
+
+\usepackage[T1]{fontenc}    %Ineterprete de tíldes
+\usepackage{float}
+\usepackage{amsmath,amssymb}    %Paquete de entornos matematicos
+\usepackage{lscape}
+\usepackage{natbib}
+\usepackage[english,spanish]{babel}
+\selectlanguage{spanish} 
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{psfrag}
+\usepackage{quotchap}
+\usepackage{epsfig}
+\usepackage[all]{xy}
+\usepackage{makeidx}
+\usepackage{ifthen}
+\usepackage{multicolpar}    %Para poner texto en columnas en plan articulo intercalado con texto normal
+\usepackage{multicol,multirow}
+\usepackage{url}        %Para direcciones web
+\usepackage{marvosym}   %Para imprimir el simbolo de \EUR euro
+%\usepackage{eurosym}   %Para imprimir el simbolo de \euro euro
+\usepackage{fancybox}   %Para tablas con bordes redondeados
+
+%%Para incluir código
+\usepackage{color}
+\usepackage{upquote}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%CODIGO FUENTE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{gray97}{gray}{.97}
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+%Configuración para el lenguaje c#
+\lstset{language=[Sharp]C,
+showspaces=false,
+showtabs=false,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+commentstyle=\color{greencomments},
+keywordstyle=\color{bluekeywords}\bfseries,
+stringstyle=\color{redstrings},
+basicstyle=\ttfamily,
+backgroundcolor=\color{gray97},
+%%%
+numberstyle=\footnotesize,
+numbers=left,
+stepnumber=1,
+numbersep=10pt,
+tabsize=2,
+breaklines=true,
+prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+breakatwhitespace=false,
+aboveskip={1.5\baselineskip},
+columns=fixed,
+upquote=true,
+extendedchars=true,
+%frame=bottomline,
+frame=lines,
+%frame=Ltbr,
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%CODIGO FUENTE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Modificación de la plantilla para adaptarla a los requisitos de PFC
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+%%% Cabeceras y pies de página
+\fancyhead[CE,CO]{\emph{\titulo}}
+\fancyhead[LE,LO,RE,RO]{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[CE,CO]{\leftmark}
+
+\renewcommand{\footrulewidth}{.6pt}
+
+
+%Definiciones de funciones para los titulos
+\newlength\salto
+\setlength{\salto}{3.5ex plus 1ex minus .2ex}
+
+\newlength\resalto
+\setlength{\resalto}{2.3ex plus.2ex}
+
+\newcommand{\lsection}[1]
+                {\section{#1}
+                \vskip-.9\resalto   %%%% Aquí reculo el posible salto por defecto de \section
+                \hrule
+                \vskip+.9\salto}  %%%% vuelvo ha realizar el salto (puedes poner otra vez el 90%)
+
+
+%Para imágenes de entornos estáticos \captionFigure{Texto Caption}{Texto Label}
+\newcommand{\captionFigure}[2]{
+    \refstepcounter{figure}
+    \centerline{Figura \thefigure: #1 \label{#2}}
+    \addcontentsline{lof}{section}{\thefigure.\ #1\label{#2}}
+}
+
+%Para imágenes de entornos estáticos \NOcaptionFigure{Texto Caption}{Texto Label} "No escribe el caption"
+\newcommand{\NOcaptionFigure}[2]{
+    \refstepcounter{figure}
+    \addcontentsline{lof}{figure}{\thefigure.\ #1\label{#2}}
+}
+
+
+%% Datos del PFC
+\newcommand{\titulo}{Sistema de Eye Tracker en Realidad Virtual Para Personas Que Tienen Discapacidad Motora}
+\newcommand{\autor}{Autor: Cristian Fernández Del Pozo}
+\newcommand{\director}{Nombre Apellido1 Apellido2}
+\newcommand{\tutor}{Tutor: Francisco de Borja Rodríguez Ortiz}
+\newcommand{\vocal}{Nombre Apellido1 Apellido2}
+\newcommand{\vocalsup}{Nombre Apellido1 Apellido2}
+\newcommand{\presidente}{Nombre Apellido1 Apellido2}
+\newcommand{\presidentesup}{Nombre Apellido1 Apellido2}
+\newcommand{\fecha}{ENERO 2019}
+\newcommand{\carrera}{Master en Investigación e Innovación}
+
+\begin{document}
+\setlength{\baselineskip}{18pt}  %% Espacio interlinea
+\setlength{\parskip}{6pt plus 1pt minus 1pt} %% Espacio interpárrafo
+
+\input{portada}
+
+\frontmatter %Define el cuerpo inicial del libro en numeración con letras romanas
+
+\input{primera_pag}
+
+\input{resumen}
+
+\input{agradecimientos}
+
+\tableofcontents
+
+\newpage \thispagestyle{empty} % Página vacía
+
+\addcontentsline{toc}{chapter}{Índice de Figuras}    %Para que aparezca en el índice
+\renewcommand{\listfigurename}{Índice de Figuras} 
+\listoffigures
+Todas las imágenes presentes han sido obtenidas a través de \emph{Google Images} bajo licencia de uso no comercial y modificación o bien son de mi propia autoría.
+\newpage \thispagestyle{empty} % Página vacía
+
+\addcontentsline{toc}{chapter}{Índice de Tablas}    %Para que aparezca en el índice
+\renewcommand{\listtablename}{Índice de Tablas} 
+\listoftables
+
+\newpage \thispagestyle{empty} % Página vacía
+
+\mainmatter %Define el cuerpo principal del libro numeración normal.
+
+% \input{preambulo}
+
+\input{cap_intro}
+
+\input{cap_estadodelarte}
+
+\input{cap_sistemadesarrollado}
+
+\input{cap_experimentos}
+
+\input{cap_conclusiones}
+
+\input{glosario}
+
+\bibliographystyle{unsrt}   %plain pero ordenado en orden de aparacicion en documento principal
+\bibliography{bibliografia}
+
+\appendix   %Indicamos que lo que viene a continuación son apéndices
+
+%\frontmatter %Para poner los anexos en numeros romanos
+
+\input{anexo_pantallazos_casos_uso}
+
+\input{anexo_codigo}
+
+%Hoja final en blanco
+\newpage \thispagestyle{empty} % Página vacía
+
+\end{document}
